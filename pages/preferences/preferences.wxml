@@ -1,0 +1,151 @@
+<wxs module="utils">
+function getPlayerInfo(players, name) {
+    for (var i = 0; i < players.length; i++) {
+        if (players[i].name === name) {
+            return players[i];
+        }
+    }
+    return null;
+}
+
+module.exports = {
+    getPlayerInfo: getPlayerInfo,
+    getPlayerName: function(player) {
+        return player ? player.name : '请选择';
+    },
+    getPlayerAvatar: function(player) {
+        return player ? player.avatar : '';
+    }
+}
+</wxs>
+
+<view class="container">
+    <view class="header">
+        <text class="title">偏好设置</text>
+    </view>
+
+    <!-- 基本设置 -->
+    <view class="section basic-settings">
+        <view class="section-title">基本设置</view>
+        
+        <!-- 出场次数设置 -->
+        <view class="appearances-setting">
+            <text>每位选手出场次数：</text>
+            <view class="number-input">
+                <view class="number-btn" bindtap="decreaseAppearances">-</view>
+                <input type="number" value="{{totalAppearances}}" bindinput="onAppearancesInput" />
+                <view class="number-btn" bindtap="increaseAppearances">+</view>
+            </view>
+        </view>
+
+        <!-- 其他设置选项 -->
+        <view class="match-settings">
+            <view class="checkbox-container" bindtap="toggleBalancedMode">
+                <checkbox checked="{{prefBalancedMode}}" />
+                <text class="checkbox-text">势均力敌模式（严格限制等级差）</text>
+            </view>
+            <view class="checkbox-container" bindtap="toggleTwoCourts">
+                <checkbox checked="{{prefTwoCourts}}" />
+                <text class="checkbox-text">两个场地同时比赛</text>
+            </view>
+            <view class="checkbox-container" bindtap="toggleAvoidMixedGender">
+                <checkbox checked="{{prefAvoidMixedGender}}" />
+                <text class="checkbox-text">避免男双对女双</text>
+            </view>
+        </view>
+    </view>
+
+    <!-- 不期望组合 -->
+    <view class="section">
+        <view class="section-title">不期望组合</view>
+        <view class="pair-list">
+            <view class="pair-item" wx:for="{{haters}}" wx:key="index">
+                <view class="pair-info">
+                    <block wx:if="{{utils.getPlayerInfo(players, item[0])}}">
+                        <view class="player-info">
+                            <image class="avatar" src="{{utils.getPlayerInfo(players, item[0]).avatar}}" mode="aspectFit"></image>
+                            <text>{{item[0]}}</text>
+                        </view>
+                        <text class="pair-symbol">🚫</text>
+                        <view class="player-info">
+                            <image class="avatar" src="{{utils.getPlayerInfo(players, item[1]).avatar}}" mode="aspectFit"></image>
+                            <text>{{item[1]}}</text>
+                        </view>
+                    </block>
+                </view>
+                <view class="delete-btn" bindtap="deleteHater" data-index="{{index}}">删除</view>
+            </view>
+        </view>
+        <view class="add-pair">
+            <picker range="{{players}}" range-key="name" bindchange="onPlayer1Change">
+                <view class="picker">
+                    <block wx:if="{{player1}}">
+                        <image class="avatar-small" src="{{player1.avatar}}" mode="aspectFit"></image>
+                        <text>{{player1.name}}</text>
+                    </block>
+                    <text wx:else>请选择选手1</text>
+                </view>
+            </picker>
+            <picker range="{{players}}" range-key="name" bindchange="onPlayer2Change">
+                <view class="picker">
+                    <block wx:if="{{player2}}">
+                        <image class="avatar-small" src="{{player2.avatar}}" mode="aspectFit"></image>
+                        <text>{{player2.name}}</text>
+                    </block>
+                    <text wx:else>请选择选手2</text>
+                </view>
+            </picker>
+            <button class="add-btn" bindtap="addHater">添加不期望组合</button>
+        </view>
+    </view>
+
+    <!-- 期望组合 -->
+    <view class="section">
+        <view class="section-title">期望组合</view>
+        <view class="pair-list">
+            <view class="pair-item" wx:for="{{goodPairs}}" wx:key="index">
+                <view class="pair-info">
+                    <block wx:if="{{utils.getPlayerInfo(players, item[0])}}">
+                        <view class="player-info">
+                            <image class="avatar" src="{{utils.getPlayerInfo(players, item[0]).avatar}}" mode="aspectFit"></image>
+                            <text>{{item[0]}}</text>
+                        </view>
+                        <text class="pair-symbol">✨</text>
+                        <view class="player-info">
+                            <image class="avatar" src="{{utils.getPlayerInfo(players, item[1]).avatar}}" mode="aspectFit"></image>
+                            <text>{{item[1]}}</text>
+                        </view>
+                    </block>
+                </view>
+                <view class="delete-btn" bindtap="deleteGoodPair" data-index="{{index}}">删除</view>
+            </view>
+        </view>
+        <view class="add-pair">
+            <picker range="{{players}}" range-key="name" bindchange="onGoodPlayer1Change">
+                <view class="picker">
+                    <block wx:if="{{goodPlayer1}}">
+                        <image class="avatar-small" src="{{goodPlayer1.avatar}}" mode="aspectFit"></image>
+                        <text>{{goodPlayer1.name}}</text>
+                    </block>
+                    <text wx:else>请选择选手1</text>
+                </view>
+            </picker>
+            <picker range="{{players}}" range-key="name" bindchange="onGoodPlayer2Change">
+                <view class="picker">
+                    <block wx:if="{{goodPlayer2}}">
+                        <image class="avatar-small" src="{{goodPlayer2.avatar}}" mode="aspectFit"></image>
+                        <text>{{goodPlayer2.name}}</text>
+                    </block>
+                    <text wx:else>请选择选手2</text>
+                </view>
+            </picker>
+            <button class="add-btn" bindtap="addGoodPair">添加期望组合</button>
+        </view>
+    </view>
+
+    <!-- 底部按钮 -->
+    <view class="buttons">
+        <button class="cancel-btn" bindtap="cancel">取消</button>
+        <button class="primary-btn" bindtap="saveAndStart">确认</button>
+    </view>
+</view>

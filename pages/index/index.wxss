@@ -1,0 +1,348 @@
+page {
+    background-color: #f5f5f5;
+}
+
+.container {
+    padding: 20rpx;
+    background-color: #f8f8f8;
+    min-height: 100vh;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30rpx;
+}
+
+.title {
+    font-size: 36rpx;
+    font-weight: bold;
+    color: #333;
+}
+
+.player-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20rpx;
+    margin-bottom: 30rpx;
+}
+
+.player-card {
+    background: white;
+    border-radius: 12rpx;
+    padding: 20rpx;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.delete-btn {
+    position: absolute;
+    top: 10rpx;
+    right: 10rpx;
+    width: 40rpx;
+    height: 40rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ff4d4f;
+    color: white;
+    border-radius: 50%;
+    font-size: 24rpx;
+}
+
+.avatar {
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: 50%;
+    margin-bottom: 10rpx;
+}
+
+.player-name {
+    font-size: 28rpx;
+    color: #333;
+    margin: 10rpx 0;
+}
+
+.player-info {
+    display: flex;
+    gap: 20rpx;
+    margin-top: 10rpx;
+}
+
+.gender {
+    font-size: 24rpx;
+    padding: 4rpx 12rpx;
+    border-radius: 20rpx;
+}
+
+.gender-male {
+    background-color: #e6f7ff;
+    color: #1890ff;
+}
+
+.gender-female {
+    background-color: #fff0f6;
+    color: #eb2f96;
+}
+
+.level {
+    font-size: 24rpx;
+    padding: 4rpx 12rpx;
+    border-radius: 20rpx;
+    background-color: #f0f0f0;
+    color: #666;
+}
+
+.add-player {
+    background: white;
+    border-radius: 12rpx;
+    padding: 30rpx;
+    margin-bottom: 30rpx;
+}
+
+.form-item {
+    margin-bottom: 20rpx;
+}
+
+.form-label {
+    font-size: 28rpx;
+    color: #333;
+    margin-bottom: 10rpx;
+}
+
+.input {
+    width: 100%;
+    height: 80rpx;
+    border: 2rpx solid #ddd;
+    border-radius: 8rpx;
+    padding: 0 20rpx;
+    font-size: 28rpx;
+}
+
+.radio-group {
+    display: flex;
+    gap: 30rpx;
+}
+
+.radio {
+    display: flex;
+    align-items: center;
+    gap: 10rpx;
+}
+
+.radio-label {
+    font-size: 28rpx;
+    color: #333;
+}
+
+.slider-container {
+    margin: 20rpx 0;
+}
+
+.slider-value {
+    text-align: center;
+    font-size: 28rpx;
+    color: #666;
+    margin-bottom: 10rpx;
+}
+
+.buttons {
+    display: flex;
+    gap: 20rpx;
+    margin-top: 30rpx;
+}
+
+.primary-btn {
+    flex: 1;
+    height: 80rpx;
+    line-height: 80rpx;
+    text-align: center;
+    background: #1aad19;
+    color: white;
+    border-radius: 8rpx;
+    font-size: 28rpx;
+}
+
+.secondary-btn {
+    flex: 1;
+    height: 80rpx;
+    line-height: 80rpx;
+    text-align: center;
+    background: #f8f8f8;
+    color: #333;
+    border: 2rpx solid #ddd;
+    border-radius: 8rpx;
+    font-size: 28rpx;
+}
+
+/* 主页面样式 */
+.players-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280rpx, 1fr));
+    gap: 20rpx;
+    margin-bottom: 60rpx;
+}
+
+.player-avatar {
+    width: 160rpx;
+    height: 160rpx;
+    border-radius: 50%;
+    margin: 0 auto 24rpx;
+    border: 8rpx solid white;
+    box-shadow: 0 6rpx 12rpx rgba(0,0,0,0.15);
+}
+
+.player-name {
+    font-size: 36rpx;
+    font-weight: bold;
+    margin: 16rpx 0;
+}
+
+.gender-badge {
+    display: inline-block;
+    padding: 4rpx 16rpx;
+    border-radius: 24rpx;
+    font-size: 24rpx;
+    margin: 6rpx;
+}
+
+.gender-male {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.gender-female {
+    background-color: #fce4ec;
+    color: #d81b60;
+}
+
+.level-badge {
+    background-color: #fff3e0;
+    color: #f57c00;
+    padding: 4rpx 16rpx;
+    border-radius: 24rpx;
+    font-size: 24rpx;
+    display: inline-block;
+}
+
+.add-player-form {
+    background: white;
+    padding: 40rpx;
+    border-radius: 20rpx;
+    margin-bottom: 40rpx;
+    box-shadow: 0 4rpx 8rpx rgba(0,0,0,0.1);
+}
+
+.form-title {
+    font-size: 32rpx;
+    font-weight: bold;
+    margin-bottom: 30rpx;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20rpx;
+}
+
+.form-group input,
+.picker {
+    height: 80rpx;
+    border: 2rpx solid #ddd;
+    border-radius: 8rpx;
+    padding: 0 20rpx;
+    background-color: white;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 40rpx;
+    margin-top: 40rpx;
+}
+
+.btn {
+    padding: 24rpx 60rpx;
+    border: none;
+    border-radius: 50rpx;
+    font-size: 32rpx;
+}
+
+.start-btn {
+    background: linear-gradient(45deg, #ff4081, #ff6b6b);
+    color: white;
+}
+
+.add-btn {
+    background: #4caf50;
+    color: white;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 20rpx;
+    right: 20rpx;
+    background: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 48rpx;
+    height: 48rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28rpx;
+    opacity: 0.7;
+    padding: 0;
+    line-height: 1;
+}
+
+.matches {
+    margin-top: 40rpx;
+}
+
+.match-item {
+    background: white;
+    padding: 40rpx;
+    border-radius: 20rpx;
+    margin-bottom: 30rpx;
+    box-shadow: 0 4rpx 8rpx rgba(0,0,0,0.1);
+}
+
+.match-header {
+    font-size: 32rpx;
+    font-weight: bold;
+    color: #0088ff;
+    margin-bottom: 20rpx;
+}
+
+.match-teams {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.team {
+    flex: 1;
+}
+
+.team-level {
+    font-size: 24rpx;
+    color: #666;
+    margin-bottom: 10rpx;
+    display: block;
+}
+
+.team-players {
+    display: flex;
+    flex-direction: column;
+    gap: 10rpx;
+}
+
+.vs {
+    margin: 0 30rpx;
+    color: #ff4444;
+    font-weight: bold;
+}

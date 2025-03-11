@@ -1,0 +1,56 @@
+<view class="container">
+    <view class="header">
+        <text class="title">🏸 对阵安排 🏸</text>
+    </view>
+
+    <view class="matchups-container">
+        <block wx:for="{{matches}}" wx:key="match">
+            <!-- 只在每轮第一场比赛时显示轮次标题 -->
+            <view class="round-title" wx:if="{{index === 0 || matches[index-1].round !== item.round}}">
+                第{{item.round}}轮
+            </view>
+
+            <!-- 比赛卡片 -->
+            <view class="match-item">
+                <!-- 比赛序号 -->
+                <view class="match-number">第{{item.match}}场</view>
+
+                <!-- 战力值显示 -->
+                <view class="team-powers">
+                    <text class="power-text">战斗力: {{item.team1.level}}</text>
+                    <text class="power-text">战斗力: {{item.team2.level}}</text>
+                </view>
+
+                <!-- 比分显示 -->
+                <view class="score-display">
+                    <view class="team-1">
+                        <view class="player-pair">
+                            <view class="player" wx:for="{{item.team1.players}}" wx:for-item="player" wx:key="name">
+                                <image class="avatar" src="{{player.avatar}}" mode="aspectFit"></image>
+                                <text class="name">{{player.name}}</text>
+                            </view>
+                        </view>
+                    </view>
+
+                    <view class="score">
+                        <text>0 : 0</text>
+                    </view>
+
+                    <view class="team-2">
+                        <view class="player-pair">
+                            <view class="player" wx:for="{{item.team2.players}}" wx:for-item="player" wx:key="name">
+                                <image class="avatar" src="{{player.avatar}}" mode="aspectFit"></image>
+                                <text class="name">{{player.name}}</text>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </block>
+    </view>
+
+    <view class="buttons">
+        <button class="secondary-btn" bindtap="regenerateMatches">重新生成</button>
+        <button class="primary-btn" bindtap="confirmMatches">确认对阵</button>
+    </view>
+</view>

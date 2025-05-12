@@ -7,17 +7,45 @@ Page({
         scoreModalFocus: false,
         tempScore1: '',
         tempScore2: '',
-        currentMatchIndex: -1
+        currentMatchIndex: -1,
+        shareMode: false    // 标记是否是通过分享打开的页面
     },
 
     onLoad(options) {
-        console.log("对阵页面加载");
+        console.log("对阵页面加载, options:", options);
+        
+        // 检查是否有分享参数
+        if (options && options.shareData) {
+            try {
+                // 解码分享数据
+                const decodedData = decodeURIComponent(options.shareData);
+                const sharedMatches = JSON.parse(decodedData);
+                console.log("从分享链接解析的对阵数据:", sharedMatches);
+                
+                this.setData({
+                    matches: sharedMatches,
+                    activeTab: 'matches',
+                    shareMode: true
+                }, () => {
+                    console.log("已加载分享的对阵数据");
+                    this.updateRankings();
+                });
+                return;
+            } catch (e) {
+                console.error("解析分享数据出错:", e);
+            }
+        }
+        
+        // 如果没有分享参数或解析失败，则加载本地数据
         this.loadData();
     },
 
     onShow() {
         console.log("对阵页面显示");
-        this.loadData();
+        // 如果不是分享模式，则重新加载数据
+        if (!this.data.shareMode) {
+            this.loadData();
+        }
     },
 
     loadData() {
@@ -56,6 +84,15 @@ Page({
     },
 
     editScore(e) {
+        // 分享模式下不允许编辑
+        if (this.data.shareMode) {
+            wx.showToast({
+                title: '分享模式下无法编辑',
+                icon: 'none'
+            });
+            return;
+        }
+        
         const matchIndex = e.currentTarget.dataset.matchIndex;
         console.log("编辑比分，比赛索引：", matchIndex);
         const match = this.data.matches[matchIndex];
@@ -199,6 +236,14 @@ Page({
     },
 
     regenerateMatches() {
+        if (this.data.shareMode) {
+            wx.showToast({
+                title: '分享模式下无法重新生成',
+                icon: 'none'
+            });
+            return;
+        }
+        
         const pages = getCurrentPages();
         const prevPage = pages[pages.length - 2];
         
@@ -206,11 +251,44 @@ Page({
             prevPage.startMatchingFromPreferences();
         }
     },
-
-    confirmMatches() {
-        wx.showToast({
-            title: '已确认对阵',
-            icon: 'success'
-        });
+    
+    // 实现分享功能
+    onShareAppMessage() {
+        // 将matches数据序列化为JSON字符串
+        const matchesData = JSON.stringify(this.data.matches);
+        const encodedData = encodeURIComponent(matchesData);
+        
+        console.log("准备分享数据，大小：", encodedData.length);
+        
+        return {
+            title: '羽毛球对阵安排',
+            path: `/pages/matchups/matchups?shareData=${encodedData}`,
+            success: function(res) {
+                console.log("分享成功", res);
+                wx.showToast({
+                    title: '分享成功',
+                    icon: 'success'
+                });
+            },
+            fail: function(res) {
+                console.log("分享失败", res);
+                wx.showToast({
+                    title: '分享失败',
+                    icon: 'none'
+                });
+            }
+        }
+    },
+    
+    // 分享到朋友圈
+    onShareTimeline() {
+        const matchesData = JSON.stringify(this.data.matches);
+        const encodedData = encodeURIComponent(matchesData);
+        
+        return {
+            title: '羽毛球对阵安排',
+            query: `shareData=${encodedData}`,
+            imageUrl: '/images/share-image.png' // 可选，分享图片
+        }
     }
 });

@@ -306,3 +306,37 @@
     color: white;
     background-color: #007AFF;
 }
+
+/* 分享按钮样式 */
+.share-button-container {
+    padding: 20rpx;
+    margin-top: 20rpx;
+}
+
+.share-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #07c160;
+    color: white;
+    border-radius: 8rpx;
+    padding: 16rpx 0;
+    font-size: 28rpx;
+    box-shadow: 0 2rpx 6rpx rgba(0, 0, 0, 0.1);
+}
+
+.share-icon {
+    margin-right: 10rpx;
+    font-size: 32rpx;
+}
+
+/* 分享模式提示样式 */
+.share-mode-tip {
+    text-align: center;
+    padding: 16rpx;
+    background-color: #f8f8f8;
+    color: #666;
+    font-size: 24rpx;
+    margin-top: 20rpx;
+    border-radius: 8rpx;
+}

@@ -1,4 +1,6 @@
 {
     "navigationBarTitleText": "对阵安排",
-    "backgroundColor": "#F8F8F8"
+    "backgroundColor": "#F8F8F8",
+    "enableShareAppMessage": true,
+    "enableShareTimeline": true
 }

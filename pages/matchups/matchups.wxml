@@ -60,6 +60,19 @@
         <view class="buttons">
             <button class="secondary-btn" bindtap="regenerateMatches">重新生成</button>
         </view>
+
+        <!-- 添加分享按钮 -->
+        <view class="share-button-container" wx:if="{{!shareMode}}">
+            <button class="share-button" open-type="share">
+                <text class="share-icon">🔗</text>
+                <text>分享对阵表</text>
+            </button>
+        </view>
+
+        <!-- 分享模式提示 -->
+        <view class="share-mode-tip" wx:if="{{shareMode}}">
+            <text>📢 您正在查看分享的对阵安排</text>
+        </view>
     </block>
 
     <!-- 排行榜视图 -->

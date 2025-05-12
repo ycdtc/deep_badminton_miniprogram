@@ -6,7 +6,22 @@ class Player {
         this.level = level;
         this.appearances = 0;  // 出场次数
         this.priority = 0;  // 出场优先级（较高的优先考虑）
-        this.avatar = `https://api.dicebear.com/7.x/adventurer/svg?seed=${name}`;
+        
+        // 根据性别选择不同的背景颜色
+        const bgColor = gender === "男" ? "1ABC9C" : "FF9FF3"; // 蓝绿色=男，粉色=女
+        
+        // 获取用户名显示文本：中文名取第一个字，英文取大写首字母或简写
+        let displayText = '';
+        if (/^[a-zA-Z]+$/.test(name)) {
+            // 英文名，全部大写
+            displayText = name.toUpperCase();
+        } else {
+            // 中文名，取第一个字
+            displayText = name.charAt(0);
+        }
+        
+        // 创建SVG格式的文字头像
+        this.avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayText)}&background=${bgColor}&color=fff`;
     }
 }
 

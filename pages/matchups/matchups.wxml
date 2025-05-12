@@ -1,56 +1,109 @@
 <view class="container">
-    <view class="header">
-        <text class="title">🏸 对阵安排 🏸</text>
+    <!-- Tab Bar -->
+    <view class="tab-bar">
+        <view class="tab {{activeTab === 'matches' ? 'active' : ''}}" bindtap="switchTab" data-tab="matches">对阵表</view>
+        <view class="tab {{activeTab === 'rankings' ? 'active' : ''}}" bindtap="switchTab" data-tab="rankings">排行榜</view>
     </view>
 
-    <view class="matchups-container">
-        <block wx:for="{{matches}}" wx:key="match">
-            <!-- 只在每轮第一场比赛时显示轮次标题 -->
-            <view class="round-title" wx:if="{{index === 0 || matches[index-1].round !== item.round}}">
-                第{{item.round}}轮
-            </view>
+    <!-- 对阵表视图 -->
+    <block wx:if="{{activeTab === 'matches'}}">
+        <view class="header">
+            <text class="title">🏸 对阵安排 🏸</text>
+        </view>
 
-            <!-- 比赛卡片 -->
-            <view class="match-item">
-                <!-- 比赛序号 -->
-                <view class="match-number">第{{item.match}}场</view>
-
-                <!-- 战力值显示 -->
-                <view class="team-powers">
-                    <text class="power-text">战斗力: {{item.team1.level}}</text>
-                    <text class="power-text">战斗力: {{item.team2.level}}</text>
+        <view class="matchups-container">
+            <block wx:for="{{matches}}" wx:key="index">
+                <!-- 只在每轮第一场比赛时显示轮次标题 -->
+                <view class="round-title" wx:if="{{index === 0 || matches[index-1].round !== item.round}}">
+                    第{{item.round}}轮
                 </view>
 
-                <!-- 比分显示 -->
-                <view class="score-display">
-                    <view class="team-1">
-                        <view class="player-pair">
-                            <view class="player" wx:for="{{item.team1.players}}" wx:for-item="player" wx:key="name">
-                                <image class="avatar" src="{{player.avatar}}" mode="aspectFit"></image>
-                                <text class="name">{{player.name}}</text>
+                <!-- 比赛卡片 -->
+                <view class="match-item" bindtap="editScore" data-match-index="{{index}}">
+                    <!-- 比赛序号 -->
+                    <view class="match-number">第{{item.match}}场</view>
+
+                    <!-- 战力值显示 -->
+                    <view class="team-powers">
+                        <text class="power-text">战斗力: {{item.team1.level}}</text>
+                        <text class="power-text">战斗力: {{item.team2.level}}</text>
+                    </view>
+
+                    <!-- 比分显示 -->
+                    <view class="score-display">
+                        <view class="team-1">
+                            <view class="player-pair">
+                                <view class="player" wx:for="{{item.team1.players}}" wx:for-item="player" wx:key="index">
+                                    <image class="avatar" src="{{player.avatar || '/images/default-avatar.png'}}" mode="aspectFit"></image>
+                                    <text class="name">{{player.name}}</text>
+                                </view>
+                            </view>
+                        </view>
+
+                        <view class="score">
+                            <text>{{item.score1 || 0}} : {{item.score2 || 0}}</text>
+                        </view>
+
+                        <view class="team-2">
+                            <view class="player-pair">
+                                <view class="player" wx:for="{{item.team2.players}}" wx:for-item="player" wx:key="index">
+                                    <image class="avatar" src="{{player.avatar || '/images/default-avatar.png'}}" mode="aspectFit"></image>
+                                    <text class="name">{{player.name}}</text>
+                                </view>
                             </view>
                         </view>
                     </view>
-
-                    <view class="score">
-                        <text>0 : 0</text>
-                    </view>
-
-                    <view class="team-2">
-                        <view class="player-pair">
-                            <view class="player" wx:for="{{item.team2.players}}" wx:for-item="player" wx:key="name">
-                                <image class="avatar" src="{{player.avatar}}" mode="aspectFit"></image>
-                                <text class="name">{{player.name}}</text>
-                            </view>
-                        </view>
-                    </view>
                 </view>
-            </view>
-        </block>
-    </view>
+            </block>
+        </view>
 
-    <view class="buttons">
-        <button class="secondary-btn" bindtap="regenerateMatches">重新生成</button>
-        <button class="primary-btn" bindtap="confirmMatches">确认对阵</button>
+        <view class="buttons">
+            <button class="secondary-btn" bindtap="regenerateMatches">重新生成</button>
+        </view>
+    </block>
+
+    <!-- 排行榜视图 -->
+    <block wx:if="{{activeTab === 'rankings'}}">
+        <view class="header">
+            <text class="title">🏆 排行榜 🏆</text>
+        </view>
+        
+        <view class="rankings-list">
+            <view class="ranking-header">
+                <text class="rank-col">排名</text>
+                <text class="name-col">选手</text>
+                <text class="stats-col">胜场</text>
+                <text class="stats-col">净胜分</text>
+            </view>
+            <block wx:for="{{rankings}}" wx:key="index">
+                <view class="ranking-item">
+                    <text class="rank-col">{{index + 1}}</text>
+                    <view class="name-col">
+                        <image class="avatar-small" src="{{item.avatar || '/images/default-avatar.png'}}" mode="aspectFit"></image>
+                        <text>{{item.name}}</text>
+                    </view>
+                    <text class="stats-col">{{item.wins}}</text>
+                    <text class="stats-col">{{item.pointDiff}}</text>
+                </view>
+            </block>
+        </view>
+    </block>
+</view>
+
+<!-- 自定义比分编辑对话框 -->
+<view class="score-modal-mask" wx:if="{{showScoreModal}}">
+    <view class="score-modal">
+        <view class="score-modal-title">编辑比分</view>
+        <view class="score-modal-content">
+            <view class="score-input-container">
+                <input class="score-input" type="number" value="{{tempScore1}}" bindinput="onScore1Input" focus="{{scoreModalFocus}}" />
+                <view class="score-colon">:</view>
+                <input class="score-input" type="number" value="{{tempScore2}}" bindinput="onScore2Input" />
+            </view>
+        </view>
+        <view class="score-modal-buttons">
+            <button class="score-modal-button cancel" bindtap="cancelScoreEdit">取消</button>
+            <button class="score-modal-button confirm" bindtap="confirmScoreEdit">确定</button>
+        </view>
     </view>
 </view>
